@@ -2,3 +2,5 @@
 .DS_Store
 *.d.mts
 *.d.mts.map
+node_modules
+bun.lockb

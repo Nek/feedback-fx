@@ -1,4 +1,4 @@
-import { createDrawState } from "./boilerplate.mjs";
+import { animate, createDrawState } from "./boilerplate.mjs";
 
 const gl = document.getElementById('canvas').getContext('webgl2');
 

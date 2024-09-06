@@ -111,14 +111,36 @@ export function getUniformLocations(gl, program) {
   }
   return locations;
 }
+
+function onRemovedFromDOM(el) {
+  return new Promise((resolve) => {
+    const targetNode = el.parentNode;
+
+    // Callback function to execute when mutations are observed
+    const callback = (mutationRecord) => {
+      for (const mutation of mutationRecord) {
+        if (mutation.type === "childList" && [...mutation.removedNodes.values()].includes(el)) {
+          observer.disconnect();
+          resolve(el);
+        }
+      }
+    };
+
+    const observer = new MutationObserver(callback);
+
+    observer.observe(targetNode, { childList: true });
+  })
+}
+
 export function animate(gl, fn) {
   let frameId = requestAnimationFrame(function draw() {
     fn();
     frameId = requestAnimationFrame(draw);
   });
-  Inputs.disposal(gl.canvas).then(() => {
+  onRemovedFromDOM(gl.canvas).then(() => {
     cancelAnimationFrame(frameId);
     gl.getExtension('WEBGL_lose_context').loseContext();
+    console.log("Cleaned up GL!")
   });
   return gl.canvas;
 }
