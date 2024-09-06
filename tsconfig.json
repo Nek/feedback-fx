@@ -1,19 +1,20 @@
 {
   "include": ["./html/**/*"],
-  "exclude": ["./html/**/*.d.*", "./eslint.config.js"],
+  "exclude": ["./html/**/*.d.*", "./eslint.config.js", "node_modules"],
   "compilerOptions": {
+    "lib": ["dom", "ESNext"],
     "allowJs": true,
     "checkJs": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "declarationMap": true,
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "module": "NodeNext",
+    "module": "ESNext",
     "skipLibCheck": false,
 
     /* Bundler mode */
-    "moduleResolution": "NodeNext",
+    "emitDeclarationOnly": true,
+    "declarationMap": true,
+    "declaration": true,
+    "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -22,6 +23,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false
   }
 }

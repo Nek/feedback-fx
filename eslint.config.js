@@ -4,10 +4,10 @@ let tseslint = require("typescript-eslint");
 
 module.exports = [
   {
-         ignores: ["eslint.config.js"]
+    ignores: ["eslint.config.js"],
   },
-  {files: ["html/**/*.{js,mjs,cjs,ts}"]},
-  {languageOptions: { globals: globals.browser }},
+  { files: ["html/**/*.{js,mjs,cjs,ts}"] },
+  { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
 ];

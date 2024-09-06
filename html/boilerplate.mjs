@@ -1,14 +1,9 @@
 // From https://observablehq.com/@mourner/webgl-2-boilerplate
 
-export function createDrawState(gl, {
-  vert,
-  frag,
-  attributes,
-  indices,
-  count,
-  offset = 0,
-  type = gl.TRIANGLES
-}) {
+export function createDrawState(
+  gl,
+  { vert, frag, attributes, indices, count, offset = 0, type = gl.TRIANGLES },
+) {
   const program = createProgram(gl, vert, frag);
   const uniforms = getUniformLocations(gl, program);
   const vao = createVertexArray(gl, program, attributes, indices);
@@ -26,14 +21,14 @@ export function createDrawState(gl, {
       } else {
         gl.drawArrays(type, offset, count);
       }
-    }
+    },
   };
 }
 export function createProgram(gl, vertexSrc, fragmentSrc) {
   const vert = gl.createShader(gl.VERTEX_SHADER);
   const frag = gl.createShader(gl.FRAGMENT_SHADER);
 
-  const pragma = '#version 300 es\n';
+  const pragma = "#version 300 es\n";
   gl.shaderSource(vert, pragma + vertexSrc);
   gl.shaderSource(frag, pragma + fragmentSrc);
 
@@ -49,7 +44,7 @@ export function createProgram(gl, vertexSrc, fragmentSrc) {
     const progLog = gl.getProgramInfoLog(program);
     const vertLog = gl.getShaderInfoLog(vert);
     const fragLog = gl.getShaderInfoLog(frag);
-    throw new Error([progLog, vertLog, fragLog].filter(Boolean).join('\n'));
+    throw new Error([progLog, vertLog, fragLog].filter(Boolean).join("\n"));
   }
 
   gl.deleteShader(vert);
@@ -72,7 +67,7 @@ export function createVertexArray(gl, program, attributes, indices) {
       stride = 0,
       offset = 0,
       buffer,
-      data
+      data,
     } = attributes[names[i]];
 
     if (data && !buffer) buffer = createBuffer(gl, data);
@@ -91,7 +86,12 @@ export function createVertexArray(gl, program, attributes, indices) {
   return vao;
 }
 // create an array buffer with data
-export function createBuffer(gl, data, usage = gl.STATIC_DRAW, type = gl.ARRAY_BUFFER) {
+export function createBuffer(
+  gl,
+  data,
+  usage = gl.STATIC_DRAW,
+  type = gl.ARRAY_BUFFER,
+) {
   const buffer = gl.createBuffer();
   gl.bindBuffer(type, buffer);
   gl.bufferData(type, data, usage);
@@ -106,7 +106,7 @@ export function getUniformLocations(gl, program) {
   const numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
   const locations = {};
   for (let i = 0; i < numUniforms; i++) {
-    const {name} = gl.getActiveUniform(program, i);
+    const { name } = gl.getActiveUniform(program, i);
     locations[name] = gl.getUniformLocation(program, name);
   }
   return locations;
@@ -119,7 +119,10 @@ function onRemovedFromDOM(el) {
     // Callback function to execute when mutations are observed
     const callback = (mutationRecord) => {
       for (const mutation of mutationRecord) {
-        if (mutation.type === "childList" && [...mutation.removedNodes.values()].includes(el)) {
+        if (
+          mutation.type === "childList" &&
+          [...mutation.removedNodes.values()].includes(el)
+        ) {
           observer.disconnect();
           resolve(el);
         }
@@ -129,7 +132,7 @@ function onRemovedFromDOM(el) {
     const observer = new MutationObserver(callback);
 
     observer.observe(targetNode, { childList: true });
-  })
+  });
 }
 
 export function animate(gl, fn) {
@@ -139,8 +142,8 @@ export function animate(gl, fn) {
   });
   onRemovedFromDOM(gl.canvas).then(() => {
     cancelAnimationFrame(frameId);
-    gl.getExtension('WEBGL_lose_context').loseContext();
-    console.log("Cleaned up GL!")
+    gl.getExtension("WEBGL_lose_context").loseContext();
+    console.log("Cleaned up GL!");
   });
   return gl.canvas;
 }
